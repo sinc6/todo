@@ -48,7 +48,11 @@
             <td>{{ i + 1 }}</td>
             <td>{{ item.description }}</td>
             <td>
-              <input type="checkbox" [(ngModel)]="item.action" />
+              <input
+                type="checkbox"
+                [(ngModel)]="item.action"
+                (ngModelChange)="onItemActionChange()"
+              />
             </td>
             <td>
               <span *ngIf="item.action" class="text-success">Evet</span>

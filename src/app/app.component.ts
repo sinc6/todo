@@ -2,16 +2,31 @@ import { Component } from '@angular/core';
 import { Model, TodoItem } from './model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StorageService } from './services/storage.service';
 
 @Component({
   selector: 'app-root',
   imports: [CommonModule, FormsModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   model = new Model();
   isDisplay = false;
+
+  constructor(private storageService: StorageService) {}
+
+  ngOnInit(): void {
+    // Burada başlangıçta 'items' dizisini model'e doğru şekilde alıyoruz
+    const savedItems = this.storageService.getData('todoItems');
+    if (savedItems.length > 0) {
+      this.model.items = savedItems;
+    } else {
+      // Eğer 'localStorage' boşsa, model'in constructor'ındaki varsayılan verileri kullanıyoruz
+      this.model.items = this.model.items; // Başlangıçtaki sabit veriler
+    }
+
+    //console.log('Loaded Items from LocalStorage or Default:', this.model.items); Yüklenen veriyi kontrol edin
+  }
 
   getName() {
     return this.model.user;
@@ -26,7 +41,13 @@ export class AppComponent {
 
   addItem(value: string): void {
     if (value != '') {
-      this.model.items.push(new TodoItem(value, false));
+      const newItem = new TodoItem(value, false);
+      this.model.items.push(newItem);
+      // Yeni öğeyi LocalStorage'a kaydet
+      this.storageService.saveData('todoItems', this.model.items);
     }
+  }
+  onItemActionChange() {
+    this.storageService.saveData('todoItems', this.model.items);
   }
 }
