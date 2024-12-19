@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +24,9 @@ export const appConfig: ApplicationConfig = {
   imports: [
     CommonModule,
     BrowserModule,
-    FormsModule, // FormsModule burada eklenmeli
+    FormsModule,
+    NgbModule,
+    // FormsModule burada eklenmeli
   ],
   providers: [],
   bootstrap: [],
